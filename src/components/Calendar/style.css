@@ -22,7 +22,6 @@
 
 .timeCell,
 .dayCell {
-	min-height: 56px;
 	padding: 8px;
 	border-bottom: 1px solid var(--onPrimary);
 }
@@ -36,6 +35,29 @@
 .dayCell {
 	border-right: 1px solid var(--onPrimary);
 	background: var(--backgroundColor);
+
+	&.appointmentStartHour {
+		padding-bottom: 0;
+		vertical-align: bottom;
+
+		.appointmentTitle {
+			padding-bottom: 0;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+	&.appointmentEndHour {
+		padding-top: 0;
+		vertical-align: top;
+
+		.appointmentTitle {
+			padding-top: 0;
+			color: transparent;
+			user-select: none;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	}
 }
 
 .appointmentTitle {
@@ -45,6 +67,7 @@
 	background: var(--primary);
 	color: var(--textPrimary);
 	font-size: 0.9rem;
+	min-height: 45px;
 }
 
 .collapsedRow {

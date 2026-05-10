@@ -9,7 +9,7 @@ import {buildCollapsedBlocks, collectWeekDates, formatHour, formatWeekdayLabel} 
 function Calendar(props: CalendarProps) {
 	const {appointments = [], startHour, endHour} = props;
 
-	const hours = Array.from({ length: endHour - startHour }, (_, index) => startHour + index);
+	const hours = Array.from({length: endHour - startHour}, (_, index) => startHour + index);
 
 	// STATES
 	const [expandedBlocks, setExpandedBlocks] = useState<Record<string, boolean>>({});
@@ -80,7 +80,7 @@ function Calendar(props: CalendarProps) {
 										<button
 											type="button"
 											className="expandButton"
-											onClick={() => setExpandedBlocks((prev) => ({ ...prev, [blockKey]: !isExpanded }))}
+											onClick={() => setExpandedBlocks((prev) => ({...prev, [blockKey]: !isExpanded}))}
 										>
 											Empty slot {formatHour(block.startHour)} - {formatHour(block.endHour)} ({isExpanded ? "open" : "close"})
 										</button>
@@ -95,8 +95,17 @@ function Calendar(props: CalendarProps) {
 							<td className="timeCell">{formatHour(hour)}</td>
 							{weekDates.map((date) => {
 								const appointment = appointmentsByDateAndHour.get(`${date}-${hour}`);
+								const isMultiHourAppointment = Boolean(appointment && appointment.endHour - appointment.startHour > 1);
+								const isStartHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.startHour);
+								const isEndHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.endHour - 1);
+								const dayCellClasses = [
+									"dayCell",
+									isStartHour ? "appointmentStartHour" : "",
+									isEndHour ? "appointmentEndHour" : "",
+								].filter(Boolean).join(" ");
+
 								return (
-									<td key={`${date}-${hour}`} className="dayCell">
+									<td key={`${date}-${hour}`} className={dayCellClasses}>
 										{appointment ? <span className="appointmentTitle">{appointment.title}</span> : null}
 									</td>
 								);
