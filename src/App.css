@@ -1,3 +1,16 @@
 .container {
-  display: block;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  color: var(--textSecondary);
+}
+
+.statusMessage {
+  margin: 16px 0;
+  font-size: 1rem;
+}
+
+.statusMessage.error {
+  color: #b91c1c;
 }

@@ -1,0 +1,48 @@
+.calendarTable {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	border-radius: 8px;
+	overflow: hidden;
+
+	th {
+		background: var(--onPrimary);
+		border: 1px solid var(--borderColor);
+		padding: 10px 8px;
+		font-weight: 700;
+		text-align: center;
+	}
+
+	.timeCol {
+		width: 90px;
+		text-align: left;
+	}
+}
+
+
+.timeCell,
+.dayCell {
+	min-height: 56px;
+	padding: 8px;
+	border-bottom: 1px solid var(--onPrimary);
+}
+
+.timeCell {
+	font-weight: 600;
+	border: 1px solid var(--onPrimary);
+	background: #f8fafc;
+}
+
+.dayCell {
+	border-right: 1px solid var(--onPrimary);
+	background: var(--backgroundColor);
+}
+
+.appointmentTitle {
+	display: block;
+	padding: 6px 8px;
+	border-radius: 6px;
+	background: var(--primary);
+	color: var(--textPrimary);
+	font-size: 0.9rem;
+}

@@ -1,3 +1,9 @@
 :root {
-  --primary: #205586;
+  --primary: #dbeafe;
+  --onPrimary: #e2e8f0;
+  --textPrimary: #1d4ed8;
+  --textSecondary: #0f172a;
+  --backgroundColor: #ffffff;
+  --borderColor: #cbd5e1;
+  --error: #b91c1c;
 }
