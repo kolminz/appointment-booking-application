@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
+// External imports
 import Calendar from "./components/Calendar";
-import type {Appointment} from "./types.ts";
-import {fetchAppointments} from "./mockApi.ts";
+import {fetchAppointments, type Appointment} from "./mockApi.ts";
+// Local imports
 import "./App.css";
 
 const START_HOUR = 8;

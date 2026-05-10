@@ -46,3 +46,25 @@
 	color: var(--textPrimary);
 	font-size: 0.9rem;
 }
+
+.collapsedRow {
+	background: #f8fafc;
+}
+
+.collapsedRow td {
+	padding: 6px 8px;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.expandButton {
+	border: 1px solid #94a3b8;
+	background: var(--backgroundColor);
+	color: #334155;
+	border-radius: 6px;
+	padding: 8px 10px;
+	cursor: pointer;
+}
+
+.expandButton:hover {
+	background: #f1f5f9;
+}

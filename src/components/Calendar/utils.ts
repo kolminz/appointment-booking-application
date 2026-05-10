@@ -1,4 +1,4 @@
-import type {CalendarProps} from "./types.ts";
+import type {CalendarProps, CollapsedBlock} from "./types.ts";
 
 export function collectWeekDates(appointments: CalendarProps["appointments"]): string[] {
 	if (appointments.length) {
@@ -24,4 +24,28 @@ export function formatWeekdayLabel(date: string): string {
 
 export function formatHour(hour: number): string {
 	return `${hour.toString().padStart(2, "0")}:00`;
+}
+
+export function buildCollapsedBlocks(appointments: CalendarProps["appointments"], hours: Array<number>): CollapsedBlock[] {
+	const occupiedHours = new Set<number>();
+
+	for (const appointment of appointments) {
+		for (let hour = appointment.startHour; hour < appointment.endHour; hour += 1) {
+			occupiedHours.add(hour);
+		}
+	}
+
+	const emptyHours = hours.filter((hour) => !occupiedHours.has(hour));
+	const blocks: CollapsedBlock[] = [];
+
+	for (const hour of emptyHours) {
+		const last = blocks[blocks.length - 1];
+		if (!last || hour !== last.endHour) {
+			blocks.push({ startHour: hour, endHour: hour + 1 });
+			continue;
+		}
+		last.endHour = hour + 1;
+	}
+
+	return blocks;
 }
