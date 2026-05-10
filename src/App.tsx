@@ -45,24 +45,16 @@ function App() {
 	}, []);
 
 	// RENDER
-	if (loading) {
-		return (
-			<div className="container">
-				<p className="statusMessage">Loading...</p>
-			</div>
-		);
-	}
-
-	if (error) {
-		return (
-			<div className="container">
-				<p className="statusMessage error">{error}</p>
-			</div>
-		);
-	}
 	return (
 		<div className="container">
-			<Calendar appointments={appointments} startHour={START_HOUR} endHour={END_HOUR} />
+			{error && <p className="statusMessage error">{error}</p>}
+			{loading ?
+				(
+					<p className="statusMessage">Loading...</p>
+				) : (
+					<Calendar appointments={appointments} startHour={START_HOUR} endHour={END_HOUR} />
+				)
+			}
 		</div>
 	);
 }

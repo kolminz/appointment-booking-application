@@ -5,7 +5,7 @@ import "./style.css";
 import {collectWeekDates, formatHour, formatWeekdayLabel} from "./utils.ts";
 
 function Calendar(props: CalendarProps) {
-	const {appointments, startHour, endHour} = props;
+	const {appointments = [], startHour, endHour} = props;
 
 	const hours = Array.from({ length: endHour - startHour }, (_, index) => startHour + index);
 
