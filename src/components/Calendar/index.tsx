@@ -46,75 +46,86 @@ function Calendar(props: CalendarProps) {
 	// RENDER
 	return (
 		<div className="container">
-			<table className="calendarTable">
-				<thead>
-				<tr>
-					<th className="timeCol">Hour</th>
-					{weekDates.map((date) => (
-						<th key={date}>
-							{formatWeekdayLabel(date)}
-						</th>
-					))}
-				</tr>
-				</thead>
+			<div className="calendarLayout">
+				<table className="calendarTable">
+					<thead>
+					<tr>
+						<th className="timeCol">Hour</th>
+						{weekDates.map((date) => (
+							<th key={date}>
+								{formatWeekdayLabel(date)}
+							</th>
+						))}
+					</tr>
+					</thead>
 
-				<tbody>
-				{hours.map((hour) => {
-					const block = collapsedHours.get(hour);
-					if (block) {
+					<tbody>
+					{hours.map((hour) => {
+						const block = collapsedHours.get(hour);
+						if (block) {
+							const blockKey = `${block.startHour}-${block.endHour}`;
+							const isExpanded = expandedBlocks[blockKey] ?? false;
+							if (!isExpanded) {
+								if (hour === block.startHour) {
+									return (
+										<tr key={`collapsed-indicator-${blockKey}`} className="collapsedIndicatorRow">
+											<td colSpan={weekDates.length + 1}>
+												<span className="collapsedIndicatorLine" />
+											</td>
+										</tr>
+									);
+								}
+								return null;
+							}
+						}
+
+						return (
+							<tr key={`hour-${hour}`}>
+								<td className="timeCell">{formatHour(hour)}</td>
+								{weekDates.map((date) => {
+									const appointment = appointmentsByDateAndHour.get(`${date}-${hour}`);
+									const isMultiHourAppointment = Boolean(appointment && appointment.endHour - appointment.startHour > 1);
+									const isStartHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.startHour);
+									const isEndHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.endHour - 1);
+									const dayCellClasses = [
+										"dayCell",
+										isStartHour ? "appointmentStartHour" : "",
+										isEndHour ? "appointmentEndHour" : "",
+									].filter(Boolean).join(" ");
+
+									return (
+										<td key={`${date}-${hour}`} className={dayCellClasses}>
+											{appointment ? <span className="appointmentTitle">{appointment.title}</span> : null}
+										</td>
+									);
+								})}
+							</tr>
+						);
+					})}
+					</tbody>
+				</table>
+
+				<div className="collapseButtons" aria-label="Collapsed empty slots controls">
+					{collapsedBlocks.map((block) => {
 						const blockKey = `${block.startHour}-${block.endHour}`;
 						const isExpanded = expandedBlocks[blockKey] ?? false;
-						const isStartOfBlock = block.startHour === hour;
-
-						if (!isStartOfBlock && !isExpanded) {
-							return null;
-						}
-
-						if (isStartOfBlock) {
-							return (
-								<tr key={blockKey} className="collapsedRow">
-									<td className="timeCell">
-										{formatHour(block.startHour)}
-									</td>
-									<td colSpan={weekDates.length}>
-										<button
-											type="button"
-											className="expandButton"
-											onClick={() => setExpandedBlocks((prev) => ({...prev, [blockKey]: !isExpanded}))}
-										>
-											Empty slot {formatHour(block.startHour)} - {formatHour(block.endHour)} ({isExpanded ? "open" : "close"})
-										</button>
-									</td>
-								</tr>
-							);
-						}
-					}
-
-					return (
-						<tr key={`hour-${hour}`}>
-							<td className="timeCell">{formatHour(hour)}</td>
-							{weekDates.map((date) => {
-								const appointment = appointmentsByDateAndHour.get(`${date}-${hour}`);
-								const isMultiHourAppointment = Boolean(appointment && appointment.endHour - appointment.startHour > 1);
-								const isStartHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.startHour);
-								const isEndHour = Boolean(isMultiHourAppointment && appointment && hour === appointment.endHour - 1);
-								const dayCellClasses = [
-									"dayCell",
-									isStartHour ? "appointmentStartHour" : "",
-									isEndHour ? "appointmentEndHour" : "",
-								].filter(Boolean).join(" ");
-
-								return (
-									<td key={`${date}-${hour}`} className={dayCellClasses}>
-										{appointment ? <span className="appointmentTitle">{appointment.title}</span> : null}
-									</td>
-								);
-							})}
-						</tr>
-					);
-				})}
-				</tbody>
-			</table>
+						return (
+							<button
+								key={blockKey}
+								type="button"
+								className="expandButton"
+								onClick={() => setExpandedBlocks((prev) => ({...prev, [blockKey]: !isExpanded}))}
+								aria-pressed={isExpanded}
+								title={`${isExpanded ? "Hide" : "Show"} ${formatHour(block.startHour)} - ${formatHour(block.endHour)}`}
+							>
+								<span className="pinLabel">
+									{formatHour(block.startHour)} - {formatHour(block.endHour)}
+								</span>
+							</button>
+						);
+					})}
+				</div>
+			</div>
 		</div>
 	);
 }

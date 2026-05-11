@@ -1,9 +1,18 @@
+.calendarLayout {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
 .calendarTable {
 	width: 100%;
+	max-width: 980px;
 	border-collapse: collapse;
 	table-layout: fixed;
 	border-radius: 8px;
 	overflow: hidden;
+	font-size: clamp(0.8rem, 1.2vw, 1rem);
 
 	th {
 		background: var(--onPrimary);
@@ -46,6 +55,7 @@
 			border-bottom-right-radius: 0;
 		}
 	}
+
 	&.appointmentEndHour {
 		padding-top: 0;
 		vertical-align: top;
@@ -66,17 +76,20 @@
 	border-radius: 6px;
 	background: var(--primary);
 	color: var(--textPrimary);
-	font-size: 0.9rem;
+	font-size: clamp(0.65rem, 1vw, 0.9rem);
 	min-height: 45px;
 }
 
-.collapsedRow {
-	background: #f8fafc;
+.collapsedIndicatorRow td {
+	padding: 0;
+	border: 0;
 }
 
-.collapsedRow td {
-	padding: 6px 8px;
-	border-bottom: 1px solid #e2e8f0;
+.collapsedIndicatorLine {
+	display: block;
+	height: 2px;
+	margin: 3px 0;
+	background: color-mix(in srgb, var(--primary) 45%, transparent);
 }
 
 .expandButton {
@@ -84,10 +97,26 @@
 	background: var(--backgroundColor);
 	color: #334155;
 	border-radius: 6px;
-	padding: 8px 10px;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 8px;
+	white-space: nowrap;
+	font-size: 0.75rem;
+
+	&:hover {
+		background: #f1f5f9;
+	}
+
+	&[aria-pressed="true"] {
+		background: #e5e7ea;
+	}
 }
 
-.expandButton:hover {
-	background: #f1f5f9;
+.collapseButtons {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-top: 42px;
 }
