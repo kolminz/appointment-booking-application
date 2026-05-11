@@ -95,5 +95,5 @@ src/
 
 - Rövidített dátum fallback
   - Ha nincs adat, egy fix hét (`2025-04-07` ... `2025-04-13`) jelenik meg.
-  - Előny: mindig van egy üres naptár nézet.
+  - Előny: mindig van legalább egy üres naptár nézet.
   - Hátrány: lehetne dinamikus az aktuális héthez képest, de ez nem volt a feladat része.

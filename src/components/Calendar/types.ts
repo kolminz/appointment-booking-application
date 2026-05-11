@@ -6,7 +6,7 @@ export interface CalendarProps {
 	endHour: number;
 }
 
-export interface CollapsedBlock {
+export interface EmptyBlock {
 	startHour: number;
 	endHour: number;
 }

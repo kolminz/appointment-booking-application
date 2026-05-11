@@ -2,7 +2,7 @@ import {useMemo, useState} from "react";
 // External imports
 import type {Appointment} from "../../mockApi.ts";
 // Local imports
-import type {CalendarProps, CollapsedBlock} from "./types.ts";
+import type {CalendarProps, EmptyBlock} from "./types.ts";
 import "./style.css";
 import {buildCollapsedBlocks, collectWeekDates, formatHour, formatWeekdayLabel} from "./utils.ts";
 
@@ -27,21 +27,24 @@ function Calendar(props: CalendarProps) {
 		}
 
 		return map;
+		// example: {"2025-04-07-9" => AppointmentObject}
 	}, [appointments]);
 
-	const collapsedBlocks = useMemo(() => {
+	const emptyBlocks = useMemo(() => {
 		return buildCollapsedBlocks(appointments, hours)
+		// example: {startHour: 8, endHour: 9}
 	}, [appointments, hours]);
 
-	const collapsedHours = useMemo(() => {
-		const map = new Map<number, CollapsedBlock>();
-		for (const block of collapsedBlocks) {
+	const emptyHours = useMemo(() => {
+		const map = new Map<number, EmptyBlock>();
+		for (const block of emptyBlocks) {
 			for (let hour = block.startHour; hour < block.endHour; hour += 1) {
 				map.set(hour, block);
 			}
 		}
 		return map;
-	}, [collapsedBlocks]);
+		// example: {8 => EmptyBlock Object}
+	}, [emptyBlocks]);
 
 	// RENDER
 	return (
@@ -61,7 +64,7 @@ function Calendar(props: CalendarProps) {
 
 					<tbody>
 					{hours.map((hour) => {
-						const block = collapsedHours.get(hour);
+						const block = emptyHours.get(hour);
 						if (block) {
 							const blockKey = `${block.startHour}-${block.endHour}`;
 							const isExpanded = expandedBlocks[blockKey] ?? false;
@@ -106,7 +109,7 @@ function Calendar(props: CalendarProps) {
 				</table>
 
 				<div className="collapseButtons" aria-label="Collapsed empty slots controls">
-					{collapsedBlocks.map((block) => {
+					{emptyBlocks.map((block) => {
 						const blockKey = `${block.startHour}-${block.endHour}`;
 						const isExpanded = expandedBlocks[blockKey] ?? false;
 						return (
